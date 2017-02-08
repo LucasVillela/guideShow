@@ -5,18 +5,18 @@ import com.kknd.model.Episode;
 import com.kknd.model.Season;
 import com.kknd.model.TVShow;
 import com.kknd.repository.TVShowRepository;
-import info.movito.themoviedbapi.TmdbApi;
-import info.movito.themoviedbapi.TmdbTV;
-import info.movito.themoviedbapi.TmdbTvEpisodes;
-import info.movito.themoviedbapi.TmdbTvSeasons;
+import info.movito.themoviedbapi.*;
+import info.movito.themoviedbapi.model.FindResults;
 import info.movito.themoviedbapi.model.tv.TvEpisode;
 import info.movito.themoviedbapi.model.tv.TvSeason;
 import info.movito.themoviedbapi.model.tv.TvSeries;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.util.StringUtils;
 
 import java.util.ArrayList;
 import java.util.List;
+
 
 /**
  * Created by root on 05/02/17.
@@ -30,13 +30,31 @@ public class TVShowServiceImpl implements TVShowService{
     private TVShowRepository tvShowRepository;
 
 
-    public TVShow findOne(int id){
-        TVShow tvShow = tvShowRepository.findById(id);
+    public TVShow findOne(String id){
+
+        Integer tvID = null;
+
+        if(id.contains("t")){
+            tvID = findTvShowIdOnAPI(id);
+        }else{
+            tvID = Integer.parseInt(id);
+        }
+        TVShow tvShow = tvShowRepository.findById(tvID);
         if(tvShow == null){
-            this.populateTvShow(id);
-            tvShow = tvShowRepository.findById(id);
+            this.populateTvShow(tvID);
+            tvShow = tvShowRepository.findById(tvID);
         }
         return tvShow;
+    }
+
+    private Integer findTvShowIdOnAPI(String id){
+        TmdbApi tmdbApi = new TmdbApi(Constants.API_KEY);
+        TmdbFind find = tmdbApi.getFind();
+
+        FindResults findResults = find.find(id, TmdbFind.ExternalSource.imdb_id,"en");
+
+        return findResults.getTvResults().get(0).getId();
+
     }
 
     private void populateTvShow(int id){

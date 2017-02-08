@@ -19,7 +19,7 @@ public class TVShowController {
 
     @RequestMapping(value = "/{id}",method = RequestMethod.GET)
     public TVShow findOne(
-            @PathVariable("id") int id){
+            @PathVariable("id") String id){
 
             return tvShowService.findOne(id);
     }
