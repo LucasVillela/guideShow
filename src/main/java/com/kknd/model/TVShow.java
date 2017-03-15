@@ -14,7 +14,7 @@ public class TVShow {
     private String name;
     private Integer numberOfSeasons;
     private String poster;
-    @Column(length = 1024)
+    @Column(length = 4096)
     private String overview;
     @OneToMany(cascade = CascadeType.ALL)
     private List<Season> seasonList;

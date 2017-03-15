@@ -7,5 +7,4 @@ import org.springframework.data.jpa.repository.JpaRepository;
  * Created by root on 06/02/17.
  */
 public interface SeasonRepository extends JpaRepository<Season,Long> {
-    //Season findOne(int tvid, int id);
 }

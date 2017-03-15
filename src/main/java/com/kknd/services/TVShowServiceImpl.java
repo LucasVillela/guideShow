@@ -16,6 +16,7 @@ import org.springframework.util.StringUtils;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 
 /**
@@ -28,6 +29,16 @@ public class TVShowServiceImpl implements TVShowService{
 
     @Autowired
     private TVShowRepository tvShowRepository;
+
+    public List<String> findAll(){
+
+        List<TVShow> tvShowList = tvShowRepository.findAll();
+        List<String> stringList = tvShowList.
+                stream()
+                .map(tvShow -> tvShow.getName())
+                .collect(Collectors.toList());
+        return stringList;
+    }
 
 
     public TVShow findOne(String id){

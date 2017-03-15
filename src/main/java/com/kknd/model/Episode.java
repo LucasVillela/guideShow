@@ -12,7 +12,7 @@ public class Episode {
 
     @Id
     private Integer id;
-    @Column(length = 1024)
+    @Column(length = 4096)
     private String overview;
     private String episodeName;
     private String poster;
